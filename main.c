@@ -15,36 +15,54 @@ int close_window(t_game *game)
 void draw_player(t_game *game)
 {
 	mlx_clear_window(game->mlx,game->win);
-	int x = game->player->x;
-	int y = game->player->y;
+	int x = game->player->pos_x;
+	int y = game->player->pos_y;
 	printf("%d \n", x);
 	mlx_put_image_to_window(game->mlx, game->win,game->player->img, x * T_S/8, y * T_S/8);
 }
 
 int	move_player(int key, t_game *game)
 {
-	int	new_x;
-	int	new_y;
-	int	new_angle;
+	double	new_x;
+	double	new_y;
+	double	new_angle;
 
-	new_x = game->player->x;
-	new_y = game->player->y;
+	new_x = game->player->pos_x;
+	new_y = game->player->pos_y;
 	new_angle = game->player->angle;
-	printf("w : %d\n",key);
+	
 	if (key == S)
-		new_y++;
+	{
+		new_x -= cos(game->player->angle);
+		new_y -= sin(game->player->angle);
+	}
 	else if (key == A)
-		new_x--;
+	{
+		new_x -= cos(game->player->angle + PI/2);
+		new_y -= sin(game->player->angle + PI/2);
+	}
 	else if (key == W)
-		new_y--;
+	{
+		new_x += cos(game->player->angle);
+		new_y += sin(game->player->angle);
+	}
 	else if (key == D)
-		new_x++;
+	{
+		new_x += cos(game->player->angle + PI/2);
+		new_y += sin(game->player->angle + PI/2);
+	}
+	else if (key == RIGHT)
+		new_angle += 0.1;
+	else if (key == LEFT)
+		new_angle -= 0.1;
 	else if (key == ESC)
 		close_window(game);
 	else
 		return (0);
-	game->player->x = new_x;
-	game->player->y = new_y;
+		
+	game->player->pos_x = new_x;
+	game->player->pos_y = new_y;
+	game->player->angle = new_angle;
 	draw_player(game);
 	return (0);
 }

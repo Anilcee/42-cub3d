@@ -47,9 +47,11 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	double	x;
-	double	y;
+	double	pos_x;
+	double	pos_y;
 	double	angle;
+	double	dir_x;
+	double	dir_y;
 	char * img;
 }				t_player;
 
