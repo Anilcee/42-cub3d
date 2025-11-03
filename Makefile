@@ -2,7 +2,7 @@ CC = cc
 #CFLAGS = -Wall -Wextra -Werror
 
 # Dosya yolları
-SRCS = main.c ray.c map_validation.c movement.c init.c
+SRCS = main.c ray.c map_validation.c movement.c init.c map.c
 OBJS = $(SRCS:.c=.o)
 NAME = cub3d
 

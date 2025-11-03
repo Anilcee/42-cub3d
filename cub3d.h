@@ -35,7 +35,7 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define TEX_NUM 4
-# define MOVE_STEP 0.001
+# define MOVE_STEP 0.05
 # define ROTATE_ANGLE 5
 # define PI 3.14159265358979323846
 
@@ -55,12 +55,12 @@ typedef struct s_player
 	double	angle;
 	double	dir_x;
 	double	dir_y;
-	char * img;
+	void * img;
 }				t_player;
 
 typedef struct s_map
 {
-	char	**grid;
+	char	**map;
 	int		rows;
 	int		cols;
 }				t_map;
@@ -83,7 +83,7 @@ typedef struct s_game
 }				t_game;
 
 void	exit_with_error(char *msg);
-void	check_file_extension(char *file_path);
+void	check_file(char *file_path);
 int		open_file(const char *file_path);
 int		move_player(t_game *game);
 int		key_press(int key, t_game *game);
@@ -91,5 +91,6 @@ int		key_release(int key, t_game *game);
 int		close_window(t_game *game);
 void	draw_player(t_game *game);
 void	init_game(t_game *game);
+void	find_player_position(t_game *game);
 
 #endif

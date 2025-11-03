@@ -35,7 +35,7 @@ int main( int argc, char **argv)
 
 	if (argc != 2)
 		exit_with_error("Usage: ./cub3d <map_file.cub>");
-	check_file_extension(argv[1]);
+	check_file(argv[1]);
 	t_game	game;
 	init_game(&game);
 	draw_player(&game);
