@@ -9,6 +9,7 @@
 # include <limits.h>
 # include <errno.h>
 # include "minilibx/mlx.h"
+# include "libft/libft.h"
 
 # define UP 65362
 # define DOWN 65364
@@ -78,5 +79,12 @@ typedef struct s_game
 	int			key_left;
 	int			key_right;
 }				t_game;
+
+void	exit_with_error(char *msg);
+void	check_file_extension(char *file_path);
+int		open_file(const char *file_path);
+int		move_player(int key, t_game *game);
+int		close_window(t_game *game);
+void	draw_player(t_game *game);
 
 #endif
