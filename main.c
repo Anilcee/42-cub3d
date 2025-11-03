@@ -21,16 +21,14 @@ void draw_player(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win,game->player->img, x * T_S/8, y * T_S/8);
 }
 
-void	init_images(t_game *game)
+void	setup_hooks(t_game *game)
 {
-	int img_height;
-	int img_width;
-	char *img="pacman.xpm";
-
-	game->player->img= mlx_xpm_file_to_image(game->mlx,img,&img_width,&img_height);
-
+	mlx_hook(game->win, ON_KEYPRESS, KEY_PRESS_MASK, key_press, game);
+	mlx_hook(game->win, ON_KEYRELEASE, KEY_RELEASE_MASK, key_release, game);
+	mlx_loop_hook(game->mlx, move_player, game);
+	mlx_hook(game->win, 17, 0, close_window, game);
+	mlx_loop(game->mlx);
 }
-
 
 int main( int argc, char **argv)
 {
@@ -39,15 +37,8 @@ int main( int argc, char **argv)
 		exit_with_error("Usage: ./cub3d <map_file.cub>");
 	check_file_extension(argv[1]);
 	t_game	game;
-	game.player = malloc(sizeof(t_player));
-	game.mlx = mlx_init();
-	game.size_x = 10 * T_S;
-	game.size_y = 10 * T_S;
-	game.win = mlx_new_window(game.mlx, game.size_x, game.size_y, "Cub3D");
-	init_images(&game);
+	init_game(&game);
 	draw_player(&game);
-	mlx_key_hook(game.win, move_player,&game);
-	mlx_hook(game.win, 17, 0, close_window, &game);
-	mlx_loop(game.mlx);
+	setup_hooks(&game);
 	return (0);
 }

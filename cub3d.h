@@ -21,19 +21,21 @@
 # define S 115
 # define D 100
 
-
+# define ON_KEYPRESS 2
+# define ON_KEYRELEASE 3
+# define KEY_PRESS_MASK (1L << 0)
+# define KEY_RELEASE_MASK (1L << 1)
 
 #define ROT_SPEED 0.1
 # define MOVE_SPEED 1.0
 # define T_S 64
 # define FOV 60
 # define NUM_RAYS 1200
-# define MINIMAP_SCALE 0.2
 # define WALL_STRIP_WIDTH (NUM_RAYS / FOV)
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define TEX_NUM 4
-# define MOVE_STEP 0.1
+# define MOVE_STEP 0.001
 # define ROTATE_ANGLE 5
 # define PI 3.14159265358979323846
 
@@ -83,8 +85,11 @@ typedef struct s_game
 void	exit_with_error(char *msg);
 void	check_file_extension(char *file_path);
 int		open_file(const char *file_path);
-int		move_player(int key, t_game *game);
+int		move_player(t_game *game);
+int		key_press(int key, t_game *game);
+int		key_release(int key, t_game *game);
 int		close_window(t_game *game);
 void	draw_player(t_game *game);
+void	init_game(t_game *game);
 
 #endif
