@@ -63,7 +63,22 @@ typedef struct s_map
 	char	**map;
 	int		rows;
 	int		cols;
+	char	*north_texture;
+	char	*south_texture;
+	char	*west_texture;
+	char	*east_texture;
+	int		floor_color;
+	int		ceiling_color;
+	int		floor_color_set;
+	int		ceiling_color_set;
 }				t_map;
+
+typedef struct s_map_line
+{
+	char *line;
+	struct s_map_line *next;
+} t_map_line;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -85,6 +100,7 @@ typedef struct s_game
 void	exit_with_error(char *msg);
 void	check_file(char *file_path);
 int		open_file(const char *file_path);
+void	load_map(t_game *game, const char *file_path);
 int		move_player(t_game *game);
 int		key_press(int key, t_game *game);
 int		key_release(int key, t_game *game);

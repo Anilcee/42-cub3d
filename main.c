@@ -1,5 +1,19 @@
 #include "cub3d.h"
 
+void	print_config(t_map *map)
+{
+	ft_printf("=== Config Information ===\n");
+	ft_printf("North texture: %s\n", map->north_texture);
+	ft_printf("South texture: %s\n", map->south_texture);
+	ft_printf("West texture: %s\n", map->west_texture);
+	ft_printf("East texture: %s\n", map->east_texture);
+	ft_printf("Floor color (RGB): %d\n", map->floor_color);
+	ft_printf("Ceiling color (RGB): %d\n", map->ceiling_color);
+	ft_printf("Map rows: %d\n", map->rows);
+	ft_printf("Map cols: %d\n", map->cols);
+	ft_printf("=========================\n");
+}
+
 int close_window(t_game *game)
 {
 	if (game->mlx)
@@ -38,6 +52,8 @@ int main( int argc, char **argv)
 	check_file(argv[1]);
 	t_game	game;
 	init_game(&game);
+	load_map(&game, argv[1]);
+	print_config(game.map);
 	draw_player(&game);
 	setup_hooks(&game);
 	return (0);
