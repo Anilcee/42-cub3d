@@ -126,6 +126,7 @@ static int is_whitespace_only(const char *line)
 static int is_map_start(const char *line)
 {
 	int i;
+	int j;
 
 	if (!line)
 		return (0);
@@ -134,7 +135,7 @@ static int is_map_start(const char *line)
 		i++;
 	if (line[i] == '\0' || line[i] == '\n')
 		return (0);
-	int j = i;
+	j = i;
 	while (line[j])
 	{
 		if (!ft_strchr("01NSEW \t\n", line[j]))
@@ -142,7 +143,6 @@ static int is_map_start(const char *line)
 		j++;
 	}
 	return (1);
-	return (0);
 }
 
 static char *strip_newline(char *line)
@@ -243,59 +243,67 @@ void find_player_position(t_game *game)
 	}
 }
 
-void load_map(t_game *game, const char *file_path)
+static int	handle_pre_map_line(t_game *game, char *line)
 {
-	int fd;
-	char *line;
-	int started;
-	int rows;
-	int max_cols;
-	t_map_line *head;
-	t_map_line *tail;
+	if (is_config_line(line))
+	{
+		parse_config_textures(game->map, line);
+		parse_config_colors(game->map, line);
+		free(line);
+		return (1);
+	}
+	if (is_whitespace_only(line))
+	{
+		free(line);
+		return (1);
+	}
+	if (!is_map_start(line))
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
+}
+
+static void	read_map_data(int fd, t_game *game, t_map_builder *builder)
+{
+	char	*line;
+	int		started;
+
+	started = 0;
+	while ((line = get_next_line(fd)))
+	{
+		if (!started && handle_pre_map_line(game, line))
+			continue;
+		if (!started)
+			started = 1;
+		if (is_whitespace_only(line))
+		{
+			free(line);
+			continue;
+		}
+		append_line(&builder->head, &builder->tail, strip_newline(line),
+			&builder->rows, &builder->max_cols);
+	}
+}
+
+void	load_map(t_game *game, const char *file_path)
+{
+	int			fd;
+	t_map_builder	builder;
 
 	fd = open_file(file_path);
 	game->map = ft_calloc(1, sizeof(t_map));
 	if (!game->map)
 		exit_with_error("Failed to allocate map struct\n");
-	started = 0;
-	rows = 0;
-	max_cols = 0;
-	head = NULL;
-	tail = NULL;
-	while ((line = get_next_line(fd)))
-	{
-		if (!started)
-		{
-			if (is_config_line(line))
-			{
-				parse_config_textures(game->map, line);
-				parse_config_colors(game->map, line);
-				free(line);
-				continue;
-			}
-			if (is_whitespace_only(line))
-			{
-				free(line);
-				continue;
-			}
-			if (!is_map_start(line))
-			{
-				free(line);
-				continue;
-			}
-			started = 1;
-		}
-		if (started && is_whitespace_only(line))
-		{
-			free(line);
-			continue;
-		}
-		append_line(&head, &tail, strip_newline(line), &rows, &max_cols);
-	}
+	builder.head = NULL;
+	builder.tail = NULL;
+	builder.rows = 0;
+	builder.max_cols = 0;
+	read_map_data(fd, game, &builder);
 	close(fd);
-	if (rows == 0)
+	if (builder.rows == 0)
 		exit_with_error("Map data not found in .cub file\n");
-	game->map->map = list_to_array(head, rows);
-	game->map->rows = rows;
-	game->map->cols = max_cols;
+	game->map->map = list_to_array(builder.head, builder.rows);
+	game->map->rows = builder.rows;
 }

@@ -79,6 +79,14 @@ typedef struct s_map_line
 	struct s_map_line *next;
 } t_map_line;
 
+typedef struct s_map_builder
+{
+	t_map_line	*head;
+	t_map_line	*tail;
+	int			rows;
+	int			max_cols;
+}				t_map_builder;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -101,6 +109,7 @@ void	exit_with_error(char *msg);
 void	check_file(char *file_path);
 int		open_file(const char *file_path);
 void	load_map(t_game *game, const char *file_path);
+void	validate_map(t_map *map);
 int		move_player(t_game *game);
 int		key_press(int key, t_game *game);
 int		key_release(int key, t_game *game);

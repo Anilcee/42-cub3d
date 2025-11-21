@@ -53,6 +53,8 @@ int main( int argc, char **argv)
 	t_game	game;
 	init_game(&game);
 	load_map(&game, argv[1]);
+	validate_map(game.map);
+	find_player_position(&game);
 	print_config(game.map);
 	draw_player(&game);
 	setup_hooks(&game);
