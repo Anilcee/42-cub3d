@@ -55,6 +55,8 @@ typedef struct s_player
 	double	angle;
 	double	dir_x;
 	double	dir_y;
+	double plane_x;
+	double plane_y;
 	void * img;
 }				t_player;
 
