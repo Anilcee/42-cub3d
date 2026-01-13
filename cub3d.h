@@ -107,6 +107,21 @@ typedef struct s_game
 	int			key_right;
 }				t_game;
 
+typedef struct s_ray
+{
+    double  camera_x;
+    double  dir_x;
+    double  dir_y;
+    int     map_pos_x;
+    int     map_pos_y;
+    int     step_x;
+    int     step_y;
+    double  delta_dist_x;
+    double  delta_dist_y;
+    double  side_dist_x;
+    double  side_dist_y;
+}           t_ray;
+
 void	exit_with_error(char *msg);
 void	check_file(char *file_path);
 int		open_file(const char *file_path);

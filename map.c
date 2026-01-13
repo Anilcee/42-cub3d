@@ -211,6 +211,8 @@ static void set_player_orientation(t_game *game, char c)
 		game->player->angle = PI;
 	game->player->dir_x = cos(game->player->angle);
 	game->player->dir_y = sin(game->player->angle);
+	game->player->plane_x = -game->player->dir_y * 0.66;
+game->player->plane_y = game->player->dir_x * 0.66;
 }
 
 static int is_player_char(char c)
