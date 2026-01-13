@@ -38,6 +38,7 @@
 # define MOVE_STEP 0.05
 # define ROTATE_ANGLE 5
 # define PI 3.14159265358979323846
+# define INFINITY_DIST 1e30
 
 typedef struct s_img
 {
@@ -120,6 +121,8 @@ typedef struct s_ray
     double  delta_dist_y;
     double  side_dist_x;
     double  side_dist_y;
+    int     hit;
+    int     side;
 }           t_ray;
 
 void	exit_with_error(char *msg);
